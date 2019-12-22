@@ -4,9 +4,9 @@ SEOTitle: 京鸿一丿 | lyle
 header-img: img/home-bg.jpg
 email: lzhlyle@msn.cn
 description: "如此鸿禧逢七度，"
-keyword: ""
-url: "http://lzh.today"              # your host, for absolute URL
-baseurl: ""         # for example, '/blog' if your blog hosted on 'host/blog' '/huxblog-boilerplate'
+keyword: "lzh, lyle"
+url: "http://blog.lzh.today"              # your host, for absolute URL
+baseurl:          # for example, '/blog' if your blog hosted on 'host/blog' '/huxblog-boilerplate'
 time: "2019-12-22"
 
 
@@ -24,7 +24,7 @@ facebook_username:
 # Build settings
 # from 2016, 'pygments' is unsupported on GitHub Pages. Use 'rouge' for highlighting instead.
 highlighter: rouge
-permalink: pretty
+permalink: /:title/ # pretty
 paginate: 17
 exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
 anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
@@ -51,9 +51,9 @@ kramdown:
 #disqus_username: _your_disqus_short_name_
 
 # Duoshuo settings
-duoshuo_username: huxblog
+duoshuo_username: 
 # Share component is depend on Comment so we can NOT use share only.
-duoshuo_share: true                     # set to false if you want to use Comment without Sharing
+duoshuo_share: false                     # set to false if you want to use Comment without Sharing
 
 
 
