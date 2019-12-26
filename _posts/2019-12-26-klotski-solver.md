@@ -75,7 +75,7 @@ tags:
         { down: 0, right: 1, up: 2, left: 3 } // 移动方向
         { "shape": [2, 1], "position": [0, 0], directions: [0, 2] }
         ```
-    - 同样采用BFS *([画的最好看](#广度优先搜索))*
+    - 同样采用BFS *(画的最好，借鉴以讲解 [广度优先搜索](#广度优先搜索))*
     - 压缩策略 [Zobrist hashing](https://en.wikipedia.org/wiki/Zobrist_hashing)
         - 提到了上述 Simon 利用 `javascript` 数据类型特点的方式仍然需要 `O(n²)` 的时间复杂度
         - Zobrist hashing 通过特殊的哈希表与哈希函数，有利于处理棋盘类游戏重复性判断的问题
@@ -83,7 +83,7 @@ tags:
         - 计算镜像棋盘状态 *(左右对称的棋盘)* 也是 `O(1)`
 - 本人题解思路的异同
     - 个人觉得，上述三篇精彩题解中，属 jeantimex 的最为出彩
-    - 着实可惜，本人在解题前尚未体会上述精彩题解的精要，一心只想解题，也因此饶了不少弯路，末尾的 [踩坑复盘](#踩坑复盘) 将重现这些愚钝的过程
+    - 着实可惜，本人在解题前尚未体会上述精彩题解的精要，一心只想解题，也因此饶了不少弯路，末尾的 *[踩坑复盘](#踩坑复盘)* 将重现这些愚钝的过程
     - 相同的思路
         - 广度优先搜索求最短路径
         - 考虑镜像棋局状态，成倍减少可能的移动
@@ -92,38 +92,38 @@ tags:
     - 不同的思路
         - 以二进制表示棋子位置
             - 优点：同时表示了棋盘大小，解决了整个滑块移动的问题
-            ```java
-            private QuickSolverIV() {
-                standard = new int[10];
-                standard[0] = 0b0110_0110_0000_0000_0000; // 曹操
-                standard[1] = 0b0000_0000_0110_0000_0000; // 关于
-                standard[2] = 0b1000_1000_0000_0000_0000; // 五虎上将
-                // ...
-                standard[6] = 0b0000_0000_0000_0000_1000; // 小兵
-                // ...
-            }
-            ```
+        ```java
+        private QuickSolverIV() {
+            standard = new int[10];
+            standard[0] = 0b0110_0110_0000_0000_0000; // 曹操
+            standard[1] = 0b0000_0000_0110_0000_0000; // 关于
+            standard[2] = 0b1000_1000_0000_0000_0000; // 五虎上将
+            // ...
+            standard[6] = 0b0000_0000_0000_0000_1000; // 小兵
+            // ...
+        }
+        ```
         - 通过位运算移动棋子
             - 优点：由于二维棋盘被 **拉伸** 成了一维的形式，天然解决了连续移动、拐角移动的问题
-            - 详见 [位运算与移动](#位运算与移动)
-            ```java
-            // up
-            blocks[i] = original << 4; // 上移一格
-            if (validate(blocks)) {
-                result.add(blocks.clone());
-                if (i != 0) {
-                    blocks[i] = original << 8; // 上移两格
-                    if (validate(blocks)) result.add(blocks.clone());
-                }
-                if (i > 5 && !this.isLeftBorder(original)) {
-                    blocks[i] = original << 5; // 向上再左滑动
-                    if (validate(blocks)) result.add(blocks.clone());
-                }
-                if (i > 5 && !this.isRightBorder(original)) {
-                    blocks[i] = original << 3; // 向上再右滑动
-                    if (validate(blocks)) result.add(blocks.clone());
-                }
+            - 详见 *[位运算与移动](#位运算与移动)*
+        ```java
+        // up
+        blocks[i] = original << 4; // 上移一格
+        if (validate(blocks)) {
+            result.add(blocks.clone());
+            if (i != 0) {
+                blocks[i] = original << 8; // 上移两格
+                if (validate(blocks)) result.add(blocks.clone());
             }
+            if (i > 5 && !this.isLeftBorder(original)) {
+                blocks[i] = original << 5; // 向上再左滑动
+                if (validate(blocks)) result.add(blocks.clone());
+            }
+            if (i > 5 && !this.isRightBorder(original)) {
+                blocks[i] = original << 3; // 向上再右滑动
+                if (validate(blocks)) result.add(blocks.clone());
+            }
+        }
             ```
 
 ### 广度优先搜索
