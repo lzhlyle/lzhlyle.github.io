@@ -11,9 +11,9 @@ tags:
     - 广度优先搜索
 ---
 
-> 要死磕，也要选值得死磕的通用题材。否则，应放弃。
+> 譬如朝露，去日苦多。
 
-## Toc
+## 索引
 
 1. [开篇](#开篇)
 2. [解题思路](#解题思路)
@@ -37,6 +37,11 @@ tags:
 
 华容道可抽象为 **非对弈双方的** *(不同于五子棋)*、**无唯一解的** *(可走不同路径，可扩展为曹操必走某处)*、**局部目标固定的** *(只要求曹操出来，可扩展为要求关羽或小兵位置)*、**移动滑块** *(可扩展为支持移形换位——跳着移动)*、**求最短路径** *(最快解出未必是最短路径)* 的问题。
 
+本文以解华容道经典开局「横刀立马」为例，基于广度优先搜索，通过位运算移动棋子，以 Java 语言实现程序解华容道。
+
+![opening](/img/in-post/klotski-solver/opening.png)
+<small class="img-hint">横刀立马</small>
+
 ## 解题思路
 
 先来几道惊险又刺激的 leetcode 热热身如何？
@@ -45,6 +50,7 @@ tags:
 - [N皇后](https://leetcode-cn.com/problems/n-queens-ii/)，棋盘与位运算
 
 ### 精彩题解参考
+
 - [HeroKern 华容道算法基础版](https://blog.csdn.net/qq_21792169/article/details/88708968)、[HeroKern  华容道算法之性能优化](https://blog.csdn.net/qq_21792169/article/details/89216377)
     - C/C++?
     - 提到了「通过栈先进后出策略完成最终路径寻找」
@@ -76,7 +82,7 @@ tags:
         { down: 0, right: 1, up: 2, left: 3 } // 移动方向
         { "shape": [2, 1], "position": [0, 0], directions: [0, 2] }
         ```
-    - 同样采用BFS *(画的最好，借鉴以讲解 [广度优先搜索](#广度优先搜索))*
+    - 同样采用BFS *(画的最好，借鉴以介绍 [广度优先搜索](#广度优先搜索))*
     - 压缩策略 [Zobrist hashing](https://en.wikipedia.org/wiki/Zobrist_hashing)
         - 提到了上述 Simon 利用 `javascript` 数据类型特点的方式仍然需要 `O(n²)` 的时间复杂度
         - Zobrist hashing 通过特殊的哈希表与哈希函数，有利于处理棋盘类游戏重复性判断的问题
@@ -85,51 +91,92 @@ tags:
 
 ### 本文思路比较
 
-- 笔者认为，上述三篇精彩题解中，属 jeantimex 的最为出彩
-- 着实可惜，笔者在解题前尚未体会上述精彩题解的精要，一心只想解题，也因此饶了不少弯路，末尾的 *[踩坑复盘](#踩坑复盘)* 将重现这些愚钝的过程
-- 相同的思路
-    - 广度优先搜索求最短路径
-    - 考虑镜像棋局状态，成倍减少可能的移动
-    - 利用数据类型特点，压缩棋局存储，利用哈希表更快判重
-    - 在BFS的同时记录路径，最终以栈形式倒序输出结果
-- 不同的思路
-    - 以二进制表示棋子位置
-        ```java
-        private QuickSolverIV() {
-            standard = new int[10];
-            standard[0] = 0b0110_0110_0000_0000_0000; // 曹操
-            standard[1] = 0b0000_0000_0110_0000_0000; // 关于
-            standard[2] = 0b1000_1000_0000_0000_0000; // 五虎上将
-            // ...
-            standard[6] = 0b0000_0000_0000_0000_1000; // 小兵
-            // ...
+笔者认为，上述三篇精彩题解中，属 jeantimex 的最为出彩。不过着实可惜，笔者在解题前尚未体会上述精彩题解的精要，一心只想解题，也因此饶了不少弯路，末尾的 *[踩坑复盘](#踩坑复盘)* 将重现这些愚钝的过程
+
+
+相同的思路
+- 广度优先搜索求最短路径
+- 考虑镜像棋局状态，成倍减少可能的移动
+- 利用数据类型特点，压缩棋局存储，利用哈希表更快判重
+- 在BFS的同时记录路径，最终以栈形式倒序输出结果
+
+
+不同的思路
+- 以二进制表示棋子位置
+    ```java
+    private QuickSolverIV() {
+        standard = new int[10];
+        standard[0] = 0b0110_0110_0000_0000_0000; // 曹操
+        standard[1] = 0b0000_0000_0110_0000_0000; // 关于
+        standard[2] = 0b1000_1000_0000_0000_0000; // 五虎上将
+        // ...
+        standard[6] = 0b0000_0000_0000_0000_1000; // 小兵
+        // ...
+    }
+    ```
+    - 优点：同时表示了棋盘大小，解决了多格滑块整体移动的问题
+- 通过位运算移动棋子
+    ```java
+    // up
+    blocks[i] = original << 4; // 上移一格
+    if (validate(blocks)) {
+        result.add(blocks.clone());
+        if (i != 0) {
+            blocks[i] = original << 8; // 上移两格
+            if (validate(blocks)) result.add(blocks.clone());
         }
-        ```
-        - 优点：同时表示了棋盘大小，解决了整个滑块移动的问题
-    - 通过位运算移动棋子
-        ```java
-        // up
-        blocks[i] = original << 4; // 上移一格
-        if (validate(blocks)) {
-            result.add(blocks.clone());
-            if (i != 0) {
-                blocks[i] = original << 8; // 上移两格
-                if (validate(blocks)) result.add(blocks.clone());
-            }
-            if (i > 5 && !this.isLeftBorder(original)) {
-                blocks[i] = original << 5; // 向上再左滑动
-                if (validate(blocks)) result.add(blocks.clone());
-            }
-            if (i > 5 && !this.isRightBorder(original)) {
-                blocks[i] = original << 3; // 向上再右滑动
-                if (validate(blocks)) result.add(blocks.clone());
-            }
+        if (i > 5 && !this.isLeftBorder(original)) {
+            blocks[i] = original << 5; // 上左滑动
+            if (validate(blocks)) result.add(blocks.clone());
         }
-        ```
-        - 优点：由于二维棋盘被 **拉伸** 成了一维的形式，天然解决了连续移动、拐角移动的问题
-        - 详见 *[位运算与移动](#位运算与移动)*
+        if (i > 5 && !this.isRightBorder(original)) {
+            blocks[i] = original << 3; // 上右滑动
+            if (validate(blocks)) result.add(blocks.clone());
+        }
+    }
+    ```
+    - 优点：由于二维棋盘被 **拉伸** 成了一维的形式，天然解决了连续移动、拐角移动的问题
+    - 详见 *[位运算与移动](#位运算与移动)*
 
 ### 广度优先搜索
+
+[广度优先搜索(维基百科)](https://zh.wikipedia.org/zh/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2)（英语：Breadth-First-Search，缩写 BFS），又名 [宽度优先搜索(百度百科)](https://baike.baidu.com/item/%E5%AE%BD%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/5224802?fromtitle=%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2&fromid=2148012)，是一种图形搜索算法。与之相关的还有 [深度优先搜索(维基百科)](https://zh.wikipedia.org/wiki/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2)（英语：Depth-First-Search，缩写 DFS）
+
+
+场景类比：男主、女主站在同一城市的不同路口，男主要去找女主
+- **深度优先搜索**——*不撞南墙不回头*
+    - 男主：你站着别动，我去找你！
+    - 女主：要是走到死胡同呢？
+    - 男主：那我再退回上个路口，换条路，继续找！
+    - 适用：
+        - 路口分岔多，只要找到就行，不求经过最少路口
+        - 已知道需经过N个路口，只求找到一种路径时
+- **广度优先搜索**——*蝙蝠回声探路*
+    - 鸣人：你站着别动，我每个路口都影分身找你！
+    - 小樱：要是走到死胡同呢？
+    - 鸣人：我每个影分身都 **同步向前** 走，分身之间可互通信息，这条不行总有条一定行！
+    - 适用：
+        - 路口分岔少，不只要找到，还要经过最少路口——**求最少步数解华容道**
+- **双向广度优先搜索**——*那就…两只蝙蝠*
+    - 鸣人：诶？你不是也会影分身吗，我们一起分身找对方啊！
+    - 小樱：你走我也走不会彼此错过吗？
+    - 鸣人：我们每个路口都分身，地毯式互找，错不了！
+    - 适用：
+        - 已知起点、终点——华容道终点棋盘样式太多，枚举起终点反而数量巨大
+
+华容道 BFS
+- 引自 [jeantimex 解释华容道 bfs](https://github.com/jeantimex/klotski#breadth-first-search-bfs)
+- 类比路口寻找
+    - 开局棋盘找终局棋盘 *(只要红色曹操出来即可)*
+    - 每次可能的移动就是每个路口可能的分岔
+    - 镜像棋盘 *(Mirror)* 算其他影分身走过的路口，不需要再走 *(剪枝 pruning)*
+    - 重复棋盘 *(Duplicate)* 也算走过的路口
+    - 如 jeantimex 的图，是 **一层一层找**
+        - 若是一条路走到底，就是深度优先搜索了
+        - > 如水波纹般散开
+
+![jeantimex-klotski-bfs](/img/in-post/klotski-solver/bfs.png)
+<small class="img-hint">图片底部居中的缩小文字</small>
 
 ### 位运算与移动
 
@@ -169,6 +216,6 @@ tags:
     - 笔者自小对棋盘、RTS、全局策略类游戏之喜爱，即便根本没有时间玩，但每次看到游戏更新的内容，都能让我为之热血
     - 几个月前为了教女儿认识交通灯，用积木搭了一个 **滑动窗口** 的红绿灯玩具，顿悟「乐高反着搭可以完美滑动」*（积木块凸起高度为正常块1/4）*，由此引申「要不做个滑块游戏」的冲动，这就有了后来的 **乐高版华容道**
     - 刚搭好那几天，我与太太心血来潮，埋头苦试「横刀立马」之解法，最终太太喜提 `First Blood`
-    - 对华容道的不甘心，加之近期对算法的刻意练习，让我更坚定了要啃下华容道的决
+    - 对华容道的不甘心，加之近期对算法的学习，让我更坚定了要啃下华容道的决心
 
 ### 跟拍花絮
