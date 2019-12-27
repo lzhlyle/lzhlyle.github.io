@@ -40,7 +40,7 @@ tags:
 本文以解华容道经典开局「横刀立马」为例，基于广度优先搜索，通过位运算移动棋子，以 Java 语言实现程序解华容道。
 
 ![opening](/img/in-post/klotski-solver/opening.png)
-<small class="img-hint">横刀立马</small>
+<small class="img-hint">横刀立马开局</small>
 
 ## 解题思路
 
@@ -142,7 +142,7 @@ tags:
 
 ### 广度优先搜索
 
-[广度优先搜索(维基百科)](https://zh.wikipedia.org/zh/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2)（英语：Breadth-First-Search，缩写 BFS），又名 [宽度优先搜索(百度百科)](https://baike.baidu.com/item/%E5%AE%BD%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/5224802?fromtitle=%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2&fromid=2148012)，是一种图形搜索算法。与之相关的还有 [深度优先搜索(维基百科)](https://zh.wikipedia.org/wiki/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2)（英语：Depth-First-Search，缩写 DFS）
+[广度优先搜索(维基百科)](https://zh.wikipedia.org/zh/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2)（英语：Breadth-First-Search，缩写 BFS），又名 [宽度优先搜索(百度百科)](https://baike.baidu.com/item/%E5%AE%BD%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/5224802?fromtitle=%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2&fromid=2148012)，是一种图形搜索算法。与之相关的还有 [深度优先搜索(维基百科)](https://zh.wikipedia.org/wiki/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2)（英语：Depth-First-Search，缩写 DFS）。
 
 
 场景类比：男主、女主站在同一城市的不同路口，男主要去找女主
@@ -170,7 +170,7 @@ tags:
 - 引自 [jeantimex 解释华容道 bfs](https://github.com/jeantimex/klotski#breadth-first-search-bfs)
 
 ![jeantimex-klotski-bfs](/img/in-post/klotski-solver/bfs.png)
-<small class="img-hint">图片底部居中的缩小文字</small>
+<small class="img-hint">华容道 广度优先搜索</small>
 
 - 类比路口寻找
     - 开局棋盘找终局棋盘 *(只要红色曹操出来即可)*
@@ -179,7 +179,6 @@ tags:
     - 重复棋盘 *(Duplicate)* 属于其他影分身走过的路口，也剪掉
     - 如 jeantimex 的图，广度优先搜索是 **一层一层找**
         - 若是一条路走到底，就属深度优先搜索
-        - > 广度优先搜索，如水波纹般散开
 
 ### 位运算与移动
 
