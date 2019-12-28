@@ -38,7 +38,7 @@ tags:
 
 华容道可抽象为 **非对弈双方的** *(不同于五子棋)*、**无唯一解的** *(可走不同路径，可扩展为曹操必走某处)*、**局部目标固定的** *(只要求曹操出来，可扩展为要求关羽或小兵位置)*、**移动滑块** *(可扩展为支持移形换位——跳着移动)*、**求最短路径** *(用时最少出未必是最短路径)* 的问题。
 
-本文以解华容道经典开局「横刀立马」为例，基于广度优先搜索，通过位运算移动棋子，以 Java 语言实现程序解华容道。
+本文以解华容道经典开局「横刀立马」为例，基于广度优先搜索，通过位运算移动棋子，以 Java 语言实现程序解华容道。源码仓库 [klotski](#https://github.com/lzhlyle/klotski)。
 
 ![opening](/img/in-post/klotski-solver/opening.png)
 <small class="img-hint">横刀立马开局</small>
@@ -245,19 +245,16 @@ tags:
         - 相当于上移 `1` 行，再右移 `1` 列
         - 相当于左移 `4` 位，再右移 `1` 位
         - 相当于左移 `3` 位
-3. 通过位移后 `& 1` 判断是否到边
+3. 通过位移后 `& 1` 判断是否到边，详见 *[实现是否靠左边](#实现是否靠左边)*
     ```java
     private boolean isLeftBorder(int block) {
         // 左边界数组，二进制对低位为0算起，3表示最下一行的左边界
-        // 以此类推，7, 11, 15, 19 表示其他各行的左边界
+        // 依此类推，7, 11, 15, 19 表示其他各行的左边界
         int[] leftBorders = new int[]{3, 7, 11, 15, 19}; 
         for (int leftBorder : leftBorders) if (((block >> leftBorder) & 1) == 1) return true;
         return false;
     }
     ```
-    - `(x & 1) == 1` 指的是 `x` 最低位（最右位最低）是否为 `1`
-    - 竖着的五虎将 `1000_1000_0000_0000_0000` 在左上角，右移 `15` 位后得 `0000_0000_0000_0001_0001` （别管当前对应什么位置，仅利用纯位移来判断原来是否是某行的左边），最低位是 `1` ，故 `return true;`
-    - 利用位运算特点：位移不改变原值，而是拷贝新值后再位移
 4. 利用 `int` ，可高效排序，在压缩棋盘时，表示对同类型棋子，**总是** 无所谓位置在哪（详见下文 *[棋局压缩](#棋局压缩)*）
     ```java
     // 每次压缩棋局前，先对同类型的棋子排序
@@ -356,7 +353,7 @@ public class QuickSolverIV {
 
 > Talk is cheap, show you the code.
 
-入口方法
+#### 入口方法 `minSteps(int[] opening): int`
 
 ```java
 // 传入开局棋盘
@@ -375,7 +372,7 @@ public int minSteps(int[] opening) {
 }
 ```
 
-递归搜索
+#### 递归搜索 `bfs(...): int`
 
 ```java
 // 广度优先搜索
@@ -419,22 +416,13 @@ IDE生成的空方法
 
 ```java
 // 返回棋局的镜像棋局
-private int[] getMirror(int[] blocks) {
-    // TODO
-    return new int[0];
-}
+private int[] getMirror(int[] blocks) { return new int[0]; }
 
 // 查找当前棋局的、所有可能的、移动后的棋局
-private List<int[]> getPossibilities(int[] blocks) {
-    // TODO
-    return Collections.emptyList();
-}
+private List<int[]> getPossibilities(int[] blocks) { return Collections.emptyList(); }
 
 // 压缩棋局
-private Long compress(int[] blocks) {
-    // TODO
-    return -1L;
-}
+private Long compress(int[] blocks) { return -1L; }
 ```
 
 ## 补充细节
@@ -452,6 +440,196 @@ private Long compress(int[] blocks) {
 
 ### 可能的移动
 
+```java
+// 查找当前棋局的、所有可能的、移动后的棋局
+private List<int[]> getPossibilities(int[] blocks) {
+    List<int[]> possibilities = new ArrayList<>();
+    // move 逐个棋子试着移动，移动有效则计入可能的移动
+    for (int i = 0; i < blocks.length; i++) {
+        // 记录棋子原来位置，最后需还原
+        int original = blocks[i];
+
+        // up 试着向上移动
+        blocks[i] = original << 4; // up
+        if (validate(blocks)) possibilities.add(blocks.clone());
+
+        // down 试着向下移动
+        blocks[i] = original >> 4; // down
+        if (validate(blocks)) possibilities.add(blocks.clone());
+
+        // 若到最左边，则不可再左移动
+        // left 试着向左移动
+        if (!isLeftBorder(original)) {
+            blocks[i] = original << 1; // left
+            if (validate(blocks)) possibilities.add(blocks.clone());
+        }
+
+        // 若到最右边，则不可再右移动
+        // right 试着向右移动
+        if (!isRightBorder(original)) {
+            blocks[i] = original >> 1; // right
+            if (validate(blocks)) possibilities.add(blocks.clone());
+        }
+
+        // reverse 还原这颗棋子的位置
+        blocks[i] = original;
+    } // end for
+    
+    return possibilities;
+}
+```
+
+关键点
+
+- 完全可通过判断空位来决定哪些棋子可移动，而不是每个棋子、每个方向都尝试，详见 *[由空位定移动](#由空位定移动)*
+- 至于 **连续移动两步**、**拐点移动** 没有体现？只是在现有基础上增加 `if` 逻辑分支 深入处理即可，并非难点，暂且跳过，后续完善
+- `int[]` 需 `clone()` 后才能加入 `possibilities`
+- 别忘了 `blocks[i] = original;` 还原棋子位置
+- 同样自顶向下编程，出现后续待完善的三个空方法
+    ```java
+    // 是否靠右边
+    private boolean isRightBorder(int block) { return false; }
+    
+    // 是否靠左边
+    private boolean isLeftBorder(int block) { return false; }
+    
+    // 校验棋盘有效性
+    private boolean validate(int[] blocks) { return false; }
+    ```
+
+#### 实现校验棋盘有效性
+
+```java
+// 校验棋盘有效性
+private boolean validate(int[] blocks) {
+    if (blocks.length != 10) return false; // 缺少棋子
+    int occupying = 0b0; // 已占位的
+    for (int block : blocks) {
+        if (block > ((1 << 20) - 1)) return false; // 越上界
+        if ((occupying & block) != 0) return false; // 重叠
+        occupying |= block; // 占位累计
+    }
+    // 消除最低位的17个1后，应该还有1——越下界
+    for (int i = 0; i < 17; i++) occupying &= occupying - 1;
+    return occupying != 0;
+}
+```
+
+关键点
+
+- `int` 共 `32` 位，最高位（最左边）为符号位，其后都是数值
+- 越上界
+    - `1 << 20` 指 `1` 向左移动了 `20` 位，得到 `000...000_1_000...000` ，最右边 `20` 个 `0`
+    - `(1 << 20) - 1` 得到 `000...000_0_111...111` ，最右边 `20` 个 `1`
+    - 若棋子超过此数，说明有 `1` 在五行四列的 `20` 位二进制棋盘之外
+- 占位累计
+    - `occupying` 为全 `0` ，看作空棋盘
+    - 随着遍历棋子，通过 `|=` 不断将占位之处 **并** 入 `occupying`
+        - `|` 理解为有 `1` 则 `1`
+    - 如开局棋盘为例
+        - 先并入曹操 `0110_0110_0000_0000_0000` 后，`occupying` 为 `0110_0110_0000_0000_0000`
+        - 在并入关羽 `0000_0000_0110_0000_0000` 后，`occupying` 为 `0110_0110_0110_0000_0000`
+    - 最终将是一个有两个 `0` 空位的、其他全 `1` 的 `20` 位表示
+- 重叠
+    - 通过 `occupying` 与当前棋子进行 `&` 操作，最终应该全是 `0`，否则出现棋子重叠
+        - `&` 理解为有 `0` 则 `0`
+- 越下界
+    - 上述越上界，指有 `1` 出现在 `20` 位之外
+    - 越下界，检查是否少了 `1`
+    - 与判断 缺少棋子 的区别
+        - 缺少棋子，指的是缺少棋子个数
+        - 越下界，更准确的称呼应是——棋子完整性，如曹操是否少个了胳膊，则说明少了 `1` ，但棋子数未少
+        - 为了对应越上界，且位运算是通过 **逐步去 `1`** 实现，姑且称越下界
+    
+
+#### 实现是否靠左边
+
+```java
+// 是否靠左边
+private boolean isLeftBorder(int block) {
+    // 左边界数组，二进制对低位为0算起，3表示最下一行的左边界
+    // 依此类推，7, 11, 15, 19 表示其他各行的左边界
+    int[] leftBorders = new int[]{3, 7, 11, 15, 19};
+    for (int leftBorder : leftBorders) if (((block >> leftBorder) & 1) == 1) return true;
+    return false;
+}
+```
+
+关键点
+
+- `(x & 1) == 1` 指的是 `x` 最低位（最右位最低）是否为 `1`
+- 竖着的五虎将 `1000_1000_0000_0000_0000` 在左上角，右移 `15` 位后得 `0000_0000_0000_0001_0001` （别管当前对应什么位置，仅利用纯位移来判断原来是否是某行的左边），最低位是 `1` ，故 `return true;`
+- 利用位运算特点：位移不改变原值，而是拷贝新值后再位移
+
+> 至于 `isRightBorder()` ，先别看，试着比对 `isLeftBorder()` 写一写？
+
+#### 同理，实现是否靠右边
+
+```java
+// 是否靠右边
+private boolean isRightBorder(int block) {
+    // 右边界数组，二进制对低位为0算起，0表示最下一行的右边界
+    // 依此类推，4, 8, 12, 16 表示其他各行的右边界
+    int[] rightBorders = new int[]{0, 4, 8, 12, 16};
+    for (int rightBorder : rightBorders) if (((block >> rightBorder) & 1) == 1) return true;
+    return false;
+}
+```
+
+#### 完善连续移动两步
+
+```java
+// up 试着向上移动
+blocks[i] = original << 4; // up
+if (validate(blocks)) {
+    possibilities.add(blocks.clone());
+
+    // 非曹操才可能连续移动
+    if (i != 0) {
+        blocks[i] = original << 8; // up 2 cells
+        if (validate(blocks)) possibilities.add(blocks.clone());
+    }
+}
+```
+
+关键点
+- 能移动一步，才可能移动两步，否则就是跳棋咯
+- 在原来的基础 `original` 上连移 `2` 格
+- 此处只展示了连续上移，还有连续下移、左移、右移
+
+#### 完善拐点移动
+
+```java
+// up 试着向上移动
+blocks[i] = original << 4; // up
+if (validate(blocks)) {
+    possibilities.add(blocks.clone());
+
+    // 非曹操才可能连续移动
+    if (i != 0) {
+        blocks[i] = original << 8; // up 2 cells
+        if (validate(blocks)) possibilities.add(blocks.clone());
+    }
+
+    // 小兵才可能拐点移动
+    if (i > 5 && !isLeftBorder(original)) {
+        blocks[i] = original << 5; // up left
+        if (validate(blocks)) possibilities.add(blocks.clone());
+    }
+    if (i > 5 && !isRightBorder(original)) {
+        blocks[i] = original << 3; // up right
+        if (validate(blocks)) possibilities.add(blocks.clone());
+    }
+}
+```
+
+关键点
+- 也是基于能移动一步，才可能拐点移动
+- 在原来的基础 `original` 上拐点移动 `(4+1)` 或 `(4-1)` 格
+- 此处只展示了先上后左/右，还有先下、先左、先右
+
+最终，整个 `getPossibilities()` 将不本文赘述，详见源码仓库 [klotski](#https://github.com/lzhlyle/klotski)。
+
 ### 棋局压缩
 
 ### 镜像棋局
@@ -460,9 +638,9 @@ private Long compress(int[] blocks) {
 
 ## 踩坑复盘
 
-### 曹操是食人族？
-
 ### 积木Debug！
+
+### 曹操是食人族？
 
 ### 关二哥穿越了...
 
@@ -473,6 +651,10 @@ private Long compress(int[] blocks) {
 ## 后记
 
 ### 抽象优化
+
+#### 由空位定移动
+
+寻找可能的移动时，先确定空位，减少逐棋子逐方向尝试。
 
 ### 心得体会
 
