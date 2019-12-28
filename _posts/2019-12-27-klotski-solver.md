@@ -334,6 +334,9 @@ public class QuickSolverIV {
     // 传入开局棋盘
     // 返回最小步数
     public int minSteps(int[] opening) {
+        // 要找的目标
+        int target = 0b0000_0000_0000_0110_0110;
+    
         // TODO
         return -1;
     }
@@ -404,7 +407,11 @@ private int bfs(int step, Queue<int[]> queue, int target, Set<Long> visited) {
     // drill down 所有分身接着向前走
     return this.bfs(step, nextQueue, target, visited);
 }
+```
 
+IDE生成的空方法
+
+```java
 // 返回棋局的镜像棋局
 private int[] getMirror(int[] blocks) {
     // TODO
