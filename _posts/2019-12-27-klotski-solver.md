@@ -356,6 +356,8 @@ public class QuickSolverIV {
 
 > Talk is cheap, show you the code.
 
+入口方法
+
 ```java
 // 传入开局棋盘
 // 返回最小步数
@@ -371,7 +373,11 @@ public int minSteps(int[] opening) {
 
     return this.bfs(step: 0, queue, target, visited);
 }
+```
 
+递归搜索
+
+```java
 // 广度优先搜索
 private int bfs(int step, Queue<int[]> queue, int target, Set<Long> visited) {
     // terminator 递归终止条件
@@ -437,10 +443,12 @@ private Long compress(int[] blocks) {
 
 写代码也犹如广度优先：不应一股脑深入具体方法的实现（深度优先），先把大框架搭好，保证思路清晰、变量及方法命名合适，再借用IDE能力快速生成空的方法实现。即「自顶向下编程」。
 
-上述代码中的三个 `TODO` 着的方法，都只是定义了一个空方法，接下来我们就实现它们
+接下来我们就实现上述代码中的三个空方法
 - *[可能的移动](#可能的移动)* `getPossibilities(int[] blocks): List<int[]>`
 - *[棋局压缩](#棋局压缩)* `compress(int[] blocks): Long`
 - *[镜像棋局](#镜像棋局)* `getMirror(int[] blocks): int[]`
+
+以及为了棋盘输出所需的 *[记录路径](#记录路径)*
 
 ### 可能的移动
 
