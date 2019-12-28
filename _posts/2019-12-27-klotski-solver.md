@@ -38,7 +38,7 @@ tags:
 
 华容道可抽象为 **非对弈双方的** *(不同于五子棋)*、**无唯一解的** *(可走不同路径，可扩展为曹操必走某处)*、**局部目标固定的** *(只要求曹操出来，可扩展为要求关羽或小兵位置)*、**移动滑块** *(可扩展为支持移形换位——跳着移动)*、**求最短路径** *(用时最少出未必是最短路径)* 的问题。
 
-本文以解华容道经典开局「横刀立马」为例，基于广度优先搜索，通过位运算移动棋子，以 Java 语言实现程序解华容道。源码仓库 [klotski](#https://github.com/lzhlyle/klotski)。
+本文以解华容道经典开局「横刀立马」为例，基于广度优先搜索，通过位运算移动棋子，以 Java 语言实现程序解华容道。源码仓库 [klotski](https://github.com/lzhlyle/klotski)。
 
 ![opening](/img/in-post/klotski-solver/opening.png)
 <small class="img-hint">横刀立马开局</small>
@@ -353,7 +353,7 @@ public class QuickSolverIV {
 
 > Talk is cheap, show you the code.
 
-#### 入口方法 `minSteps(int[] opening): int`
+#### 入口方法
 
 ```java
 // 传入开局棋盘
@@ -372,7 +372,7 @@ public int minSteps(int[] opening) {
 }
 ```
 
-#### 递归搜索 `bfs(...): int`
+#### 递归主体
 
 ```java
 // 广度优先搜索
@@ -432,9 +432,9 @@ private Long compress(int[] blocks) { return -1L; }
 写代码也犹如广度优先：不应一股脑深入具体方法的实现（深度优先），先把大框架搭好，保证思路清晰、变量及方法命名合适，再借用IDE能力快速生成空的方法实现。即「自顶向下编程」。
 
 接下来我们就实现上述代码中的三个空方法
-- *[可能的移动](#可能的移动)* `getPossibilities(int[] blocks): List<int[]>`
-- *[棋局压缩](#棋局压缩)* `compress(int[] blocks): Long`
-- *[镜像棋局](#镜像棋局)* `getMirror(int[] blocks): int[]`
+- *[可能的移动](#可能的移动)* `getPossibilities()`
+- *[棋局压缩](#棋局压缩)* `compress()`
+- *[镜像棋局](#镜像棋局)* `getMirror()`
 
 以及为了棋盘输出所需的 *[记录路径](#记录路径)*
 
@@ -628,7 +628,7 @@ if (validate(blocks)) {
 - 在原来的基础 `original` 上拐点移动 `(4+1)` 或 `(4-1)` 格
 - 此处只展示了先上后左/右，还有先下、先左、先右
 
-最终，整个 `getPossibilities()` 将不本文赘述，详见源码仓库 [klotski](#https://github.com/lzhlyle/klotski)。
+最终，整个 `getPossibilities()` 将不在本文赘述，详见源码仓库 [klotski](https://github.com/lzhlyle/klotski)。
 
 ### 棋局压缩
 
