@@ -166,7 +166,7 @@ tags:
     - 鸣人：诶？你不是也会影分身吗，我们一起分身找对方啊！
     - 小樱：你走我也走不会彼此错过吗？
     - 鸣人：我们每个路口都分身，地毯式互找，错不了！
-    - 适用：已知起点、终点——华容道终点棋盘样式太多，枚举起终点反而数量巨大
+    - 适用：已知起点、终点——华容道终点棋盘样式太多，枚举起终点反而数量巨大。可参考笔者在 [单词接龙的题解](https://leetcode-cn.com/problems/word-ladder/solution/shuang-duan-yan-du-you-xian-di-gui-yu-chu-li-44ms-/)
 
 华容道 BFS
 - 引自 [jeantimex 解释华容道 bfs](https://github.com/jeantimex/klotski#breadth-first-search-bfs)
@@ -737,7 +737,229 @@ private Long compress(int[] blocks) {
 
 ### 镜像棋局
 
+```java
+// 返回棋局的镜像棋局
+private int[] getMirror(int[] blocks) {
+    int len = blocks.length;
+    int[] mirror = new int[len];
+    // 逐个棋子找镜像位置，放入镜像棋局
+    for (int i = 0; i < len; i++) {
+        // 最左边的，右移2（曹操/关羽——横向已占2格的）或3格（非曹操关羽——横向只占1格的）
+        // 1100 -> 0011, 1000 -> 0001
+        if (this.isLeftBorder(blocks[i])) mirror[i] = blocks[i] >> (i < 2 ? 2 : 3);
+        // 最右边，左移2或3格
+        // 0011 -> 1100, 0001 -> 1000
+        else if (this.isRightBorder(blocks[i])) mirror[i] = blocks[i] << (i < 2 ? 2 : 3);
+        // 非曹操/关羽时（曹/关在中间时就是镜像位），可能需左/右移1格
+        else if (i > 1) {
+            // 左移1格到边的话，那么镜像位为右移1格
+            // 0100 -> 0010
+            if (this.isLeftBorder(blocks[i] << 1)) mirror[i] = blocks[i] >> 1;
+            // 右移1格到边的话，那么镜像位为左移1格
+            // 0010 -> 0100
+            if (this.isRightBorder(blocks[i] >> 1)) mirror[i] = blocks[i] << 1;
+        }
+        // 当前与镜像同位置，直接放入
+        // 0110 -> 0110
+        else mirror[i] = blocks[i];
+    }
+    return mirror;
+}
+```
+
+关键点
+
+- 寻找镜像位，实际上就是左右移动，无关上下移动
+- 再次利用到二进制表示法的好处：移动时整个棋子移动，即找镜像位是该棋子的所有行，都同时找镜像位
+- 寻找 *[可能的移动](#可能的移动)* 时，是整个棋局 `int[]` 的 `clone()` ，因为 `int[]` 对象传递的是数组地址，需要克隆才能不影响原棋局
+- 而此处是 `int` 的赋值，传递的是值本身，无需克隆
+
+至此，程序已经可运行，并返回 `81` 的最小步数，运行时间平均在 `47ms` 。
+
+```java
+public static void main(String[] args) {
+    QuickSolver4Blog solver = new QuickSolver4Blog();
+    long sum = 0;
+    int times = 100; // 100次
+    for (int i = 0; i < times; i++) {
+        Date begin = new Date();
+        int res = solver.minSteps(solver.standard);
+        Date end = new Date();
+        sum += end.getTime() - begin.getTime();
+    }
+    System.out.println("average millis: " + sum / times); // 取平均值
+}
+```
+
 ### 记录路径
+
+若你想输出最优步数的每一步，则需要增加跟踪路径的侦探。
+
+记录路径的作法多种，如
+
+- 先BFS找出最优步数 `81` ，再DFS找满足 `81` 的路径，可参考笔者在 [单词接龙II的题解](https://leetcode-cn.com/problems/word-ladder-ii/solution/18ms-xian-shuang-xiang-bfszai-dfs-by-lzhlyle/)。
+- BFS的同时，记录当前棋局与上一步的棋局，形成一棵大树 *（心中可有B树？）*，本文采用了此种方法
+    - 使用 `Map<int[], int[]>` 作为路劲跟踪者，`key` 为某时刻的棋局，`value` 为上一棋局
+    - 因最终需要打印棋局，而非快速计算最优步数，故此时无需压缩
+    - 利用哈希表的插入、查询都是 `O(1)` 的优势，可快速插入跟踪点、查询上游
+
+1. 在入口方法 `minSteps()` 内初始跟踪者
+
+```java
+// 传入开局棋盘
+// 返回最小步数
+public int minSteps(int[] opening) {
+    // ...
+
+    // 路径记录
+    Map<int[], int[]> paths = new HashMap<>();
+    paths.put(opening, null);
+
+    return this.bfs(0, queue, target, visited, paths); // 传入跟踪者
+}
+```
+
+2. 递归主体 `bfs()` 支持跟踪者
+3. 跟踪者执行记录
+
+```java
+// 广度优先搜索
+// 支持传入跟踪者
+private int bfs(int step, Queue<int[]> queue, int target, Set<Long> visited, Map<int[], int[]> paths) {
+    // ...
+    
+    while (!queue.isEmpty()) {
+        int[] current = queue.remove(); // 逐个分身走
+        // 看看这个路口有几条分岔
+        List<int[]> possibilities = this.getPossibilities(current);
+        for (int[] possibility : possibilities) {
+            // pruning: visited 看看哪些分岔其他分身走过了
+            if (visited.contains(this.compress(possibility))) continue; // 若走过，则跳过不再考虑
+
+            // can be possible
+            paths.put(possibility, current); // 跟踪者执行记录
+
+            // 下一条路就是终点，则返回经过了多少批分身（即多少个路口）
+            if (possibility[0] == target) return step; // win
+
+            // ...
+        }
+    }
+
+    // drill down 所有分身接着向前走
+    return this.bfs(step, nextQueue, target, visited, paths); // 传入跟踪者
+}
+```
+
+#### 输出棋盘
+
+根据棋盘的 `int[]` 表示，输出一点不是问题，此处也给出样例。
+
+在 `return step;` 之前调用 `output(paths, possibility);`
+
+```java
+// 输出路径
+private void output(Map<int[], int[]> paths, int[] curr) {
+    // 先利用栈的先进后出，倒序存行进步骤
+    Stack<int[]> stack = new Stack<>();
+    while (paths.get(curr) != null) {
+        stack.push(curr);
+        curr = paths.get(curr);
+    }
+
+    System.out.println("========================");
+    System.out.println("开局");
+    printLayout(curr);
+
+    int count = 0;
+    while (!stack.isEmpty()) {
+        System.out.println("第 " + (++count) + " 步");
+        int[] b = stack.pop();
+        printLayout(b);
+
+        // 输出镜像棋局
+        // System.out.println("mirror:");
+        // printLayout(this.getMirror(b));
+    }
+}
+```
+
+```java
+// 输出棋局
+private void printLayout(int[] curr) {
+    // 每个棋子，每个1都以字符表示
+    char[] symbol = new char[]{'S', 'H', 'V', 'V', 'V', 'V', 'C', 'C', 'C', 'C'};
+    String[] bStrArr = new String[10];
+    // 逐棋子补0后转String
+    for (int i = 0; i < 10; i++) {
+        StringBuilder builder = new StringBuilder(Integer.toBinaryString(curr[i]));
+        int length = builder.length();
+        for (int j = 0; j < 20 - length; j++) builder.insert(0, "0");
+        bStrArr[i] = builder.toString().replace('1', symbol[i]);
+    }
+
+    // 将棋子存入五行四列的20个格子中
+    char[] inline = new char[20];
+    for (int i = 0; i < 20; i++) {
+        for (String bStr : bStrArr) {
+            if (bStr.charAt(i) != '0') { inline[i] = bStr.charAt(i); break; }
+        }
+    }
+
+    // 逐行输出
+    for (int i = 0; i < 5; i++) {
+        int j = i * 4;
+        System.out.print(inline[j++]);
+        System.out.print(inline[j++]);
+        System.out.print(inline[j++]);
+        System.out.print(inline[j]);
+        System.out.println();
+    }
+    System.out.println();
+}
+```
+
+运行效果
+
+```bash
+========================
+开局
+VSSV
+VSSV
+VHHV
+VCCV
+C  C
+
+第 1 步
+VSSV
+VSSV
+VHHV
+VCCV
+ C C
+
+第 2 步
+VSSV
+VSSV
+ HHV
+VCCV
+VC C
+ 
+...
+
+第 80 步
+VVVV
+VVVV
+HHCC
+C SS
+C SS
+
+第 81 步
+VVVV
+VVVV
+HHCC
+CSS 
+CSS 
+```
 
 ## 踩坑复盘
 
