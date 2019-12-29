@@ -4,7 +4,7 @@ title:      一句话的设计模式
 subtitle:   看一眼就快速回想起该设计模式的种种记忆
 date:       2015-08-02
 author:     lyle
-header-img: "img/post-bg-design-pattern-index.jpg"
+header-img: "img/in-post/post-bg-design-pattern-index.jpg"
 tags:
     - 学习笔记
     - 设计模式
