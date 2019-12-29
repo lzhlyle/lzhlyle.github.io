@@ -735,6 +735,7 @@ private Long compress(int[] blocks) {
 
 - 找最低位 `1` 的位置，是试着逐个位右移后，每次都判断移后最低位是否为 `1` ，更好的写法是？
 - 纵观全局，虽返回值为 `long` ，但判重的哈希集合 `visited` 类型为 `Set<Long>` ，意味着存在装箱、拆箱，可有更好方案？
+- *[看看其他读者还有哪些方案](https://github.com/lzhlyle/klotski/issues/1)*
 
 ### 镜像棋局
 
@@ -1073,6 +1074,8 @@ Queue<int[]> allNextQueue = new PriorityQueue<>(
 #### 抽象形状判断
 
 对于移动前的形状筛选，以及压缩前的同形排序，都可通过抽象形状判断，而非固定索引值的方式来硬执行，由此可适应更多开局。
+
+*[看看其他读者还提出了哪些优化方向](https://github.com/lzhlyle/klotski/issues/1)*
 
 ### 心得体会
 
