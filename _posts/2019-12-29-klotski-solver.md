@@ -734,6 +734,9 @@ private Long compress(int[] blocks) {
 思考
 
 - 找最低位 `1` 的位置，是试着逐个位右移后，每次都判断移后最低位是否为 `1` ，更好的写法是？
+    - 通过 `temp[i] & -temp[i]` 取最低位 `1` 后，再对数所得
+    - `long lowest = 31 - Integer.numberOfLeadingZeros(temp[i] & -temp[i]);`
+    - 减少了每个棋子都 `for` ，加快了计算速度
 - 纵观全局，虽返回值为 `long` ，但判重的哈希集合 `visited` 类型为 `Set<Long>` ，意味着存在装箱、拆箱，可有更好方案？
 - *[看看其他读者还有哪些方案](https://github.com/lzhlyle/klotski/issues/1)*
 
