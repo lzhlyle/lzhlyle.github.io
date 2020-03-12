@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      敏捷成长？
-subtitle:   敏捷开发如何改变对成长的认知
+subtitle:   敏捷的思想，改变对成长的认知
 date:       2020-03-12
 author:     lyle
 header-img: "img/in-post/agile-grow/banner.jpeg"
