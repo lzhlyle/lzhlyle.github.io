@@ -70,7 +70,7 @@ tags:
 喔，还有？没关系，来吧，熬过这茬，还能有啥
 
 ```java
-while (challenge && canYou) ++grow;
+while (challenge && canYou && grow < LIMIT) ++grow;
 ```
 
 ## 追求结论的陷阱
