@@ -145,12 +145,13 @@ public int minOperations(int n) {
 
 示例 1
 
-![opening](/img/in-post/leetcode-contest-weekly-202/t3.jpg)
+![t3 eg1](/img/in-post/leetcode-contest-weekly-202/t3-eg1.jpg)
 
 ```
 输入：position = [1,2,3,4,7], m = 3
 输出：3
-解释：将 3 个球分别放入位于 1，4 和 7 的三个篮子，两球间的磁力分别为 [3, 3, 6]。最小磁力为 3 。我们没办法让最小磁力大于 3 。
+解释：将 3 个球分别放入位于 1，4 和 7 的三个篮子，两球间的磁力分别为 [3, 3, 6]。
+最小磁力为 3 。我们没办法让最小磁力大于 3 。
 ```
 
 示例 2
