@@ -13,9 +13,9 @@ tags:
 
 > 痛苦的不是失败，而是「我本可以」。
 >
-> 更痛苦的不是「我本可以」，而是「我以为我本可以」。
+> 更痛苦的不是「我本可以」，而是「自以为我本可以」。
 
-本周的周赛比较适合上分，大神们都是手速场。自信以为能挺进 150，实则 T4 都没写出来，600 开外慢走不送……
+本周的周赛比较适合上分，大神们都是手速场。自信以为能挺进 150，结果 T4 都没 AC，600 开外慢走不送……
 
 特此复盘，有感而记。
 
@@ -61,7 +61,7 @@ tags:
 - 遍历数组，统计连续奇数个数 `cnt`
 - 易错点
     - 要求 `cnt >= 3` 而非 `cnt == 3`
-    - 遍历结束需要判断一次 `cnt`
+    - 遍历结束需要再判断一次 `cnt`，经典范式了都
 
 #### 参考代码
 
@@ -119,6 +119,7 @@ public boolean threeConsecutiveOdds(int[] arr) {
 
 - 步长为 `2` 的递增等差数列，头尾配对操作，最终都为中位数 `to`
 - 只需求前半段，共 `n / 2` 个元素，的等差数列和
+- 数据范围不大，遍历 `O(n)` 也能过
 - 易错点：注意 `n` 的奇偶处理
 
 #### 参考代码
@@ -148,7 +149,7 @@ public int minOperations(int n) {
 
 #### 题解思路
 
-- 尽量隔开，要求放完
+- 尽量都间隔开，要求放完所有球
 - 对结果二分，统计能放下的个数 `cnt`
 
 #### 参考代码
@@ -156,15 +157,20 @@ public int minOperations(int n) {
 ```java
 public int maxDistance(int[] arr, int m) {
     Arrays.sort(arr);
+    
     int l = 1, r = arr[arr.length - 1] - arr[0];
     while (l < r) {
-        int mid = l + (r - l + 1) / 2, cnt = 1;
+        int mid = l + (r - l + 1) / 2;
+        
+        // check
+        int cnt = 1;
         for (int i = 1, last = arr[0]; i < arr.length; i++) {
             if (arr[i] - last >= mid) {
                 cnt++;
                 last = arr[i];
             }
         }
+        
         if (cnt < m) r = mid - 1;
         else l = mid;
     }
@@ -255,8 +261,8 @@ private int dfs(int n, Map<Integer, Integer> map) {
     if (map.containsKey(n)) return map.get(n);
     
     int res = n;
-    res = Math.min(res, dfs(n / 2, map) + 1 + n % 2);
-    res = Math.min(res, dfs(n / 3, map) + 1 + n % 3);
+    res = Math.min(res, dfs(n / 2, map) + 1 + n % 2); // 还差 n % 2 可跳
+    res = Math.min(res, dfs(n / 3, map) + 1 + n % 3); // 还差 n % 3 可跳
     
     map.put(n, res);
     return res;
@@ -276,9 +282,8 @@ private int dfs(int n, Map<Integer, Integer> map) {
 
 ##### DP Bottom-Up
 
-- 超出空间限制
+- `dp` 超出空间限制
 - 比较中规中矩的动态规划
-- 粗心，没留意数据范围
 
 ```java
 public int minDays(int n) {
@@ -303,7 +308,7 @@ public int minDays(int n) {
 
 - StackOverflowError
 - 由 DP Bottom-Up 转换而来
-- 直接 `dfs(n - 1, map)` 就干崩了
+- 直接 `dfs(n - 1, map)` 就给干崩了
 
 ```java
 public int minDays(int n) {
@@ -326,6 +331,7 @@ private int dfs(int n, Map<Integer, Integer> map) {
 ##### DP Top-Down Adv
 
 - AC，赛后才出来，心痛
+- 优化 DP Top-Down 而来
 - 比赛时放弃了 dfs，转了贪心
 
 ```java
@@ -352,7 +358,7 @@ private int dfs(int n, Map<Integer, Integer> map) {
 
 ##### Greedy
 
-- WA，思路就不对嘛
+- WA
 - 心态崩溃，小青蛙都跳上来了
 
 ```java
@@ -376,11 +382,13 @@ public int minDays(int n) {
 
 - T1 与以往一样，都是数组遍历的简单题
 - T2 求最小操作数一般都有捷径可走，`O(n)` 也不会 TLE
-- T3 求最小距离的最大值，有点像供暖、路灯。有范围的单值结果，考虑二分。这类型的题总算是出来一次了，团队赛那次也是差了点儿
+- T3 求最小距离的最大值，有点像供暖、路灯。求有范围的单值结果，考虑二分。这类型的题总算是出来一次了，团队赛那次差在了区间调整，还是思路要清晰呀
 - T4 时间很充裕，却一直在自顶向下的动态规划和贪心里绕，思路不够清晰
 
 总体是历来难度较小的一次了，没能把握住有些遗憾吧
 
-有时候感觉还能再抢救一下，到最后才明白，其实差的不只是几行代码，而是整个题解思路的稳步推进。动态规划也好，链表、树状遍历也罢，都还需要大量的练习与复习。思路的距离，往往大于代码的距离。
+有时候感觉还能再抢救一下，到最后才明白，其实差的不只是几行代码，而是整个题解思路的稳步推进。动态规划也好，链表、树的遍历也罢，都还需要练习。思路的距离，往往大于代码的距离。
 
 > 认知的距离，往往大于行动的距离。
+>
+> 结果就是 0 与 1。
