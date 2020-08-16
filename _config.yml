@@ -47,13 +47,18 @@ kramdown:
   input: GFM                            # use Github Flavored Markdown !important
 
 math:
-  engine: 'mathjax'
-
-# MathJax Support
-mathjax:
-  enable: true
-  per_page: true
-  cdn: //cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML
+  engine: 'mathjax' # or 'katex'
+  mathjax:
+    enable: true
+    per_page: true
+    src: custom_mathjax_source
+    config:
+      # MathJax config
+  katex:
+    css: custom_css_source
+    js: custom_js_source # not used
+    config:
+      # KaTeX config
 
 
 # Disqus settings
