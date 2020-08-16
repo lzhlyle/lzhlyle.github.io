@@ -6,7 +6,7 @@ date:       2020-08-16
 author:     lyle
 header-img: "img/in-post/leetcode-contest-weekly-202/banner.jpg"
 tags:
-    - LeetCode 周赛
+    - LeetCode 竞赛
     - 复盘
     - 思考随笔
 ---
@@ -51,10 +51,8 @@ tags:
 
 提示
 
-```
-1 <= arr.length <= 1000
-1 <= arr[i] <= 1000
-```
+- `1 <= arr.length <= 1000`
+- `1 <= arr[i] <= 1000`
 
 #### 题解思路
 
@@ -111,9 +109,7 @@ public boolean threeConsecutiveOdds(int[] arr) {
 
 提示
 
-```
-1 <= n <= 10^4
-```
+- `1 <= n <= 10^4`
 
 #### 题解思路
 
@@ -146,6 +142,32 @@ public int minOperations(int n) {
 > 已知两个球如果分别位于 `x` 和 `y`，那么它们之间的磁力为 `|x - y|`。
 >
 > 给你一个整数数组 `position` 和一个整数 `m`，请你返回最大化的最小磁力。
+
+示例 1
+
+![opening](/img/in-post/leetcode-contest-weekly-202/t3.jpg)
+
+```
+输入：position = [1,2,3,4,7], m = 3
+输出：3
+解释：将 3 个球分别放入位于 1，4 和 7 的三个篮子，两球间的磁力分别为 [3, 3, 6]。最小磁力为 3 。我们没办法让最小磁力大于 3 。
+```
+
+示例 2
+
+```
+输入：position = [5,4,3,2,1,1000000000], m = 2
+输出：999999999
+解释：我们使用位于 1 和 1000000000 的篮子时最小磁力最大。
+```
+
+提示
+
+- `n == position.length`
+- `2 <= n <= 10^5`
+- `1 <= position[i] <= 10^9`
+- 所有 position 中的整数 互不相同
+- `2 <= m <= position.length`
 
 #### 题解思路
 
@@ -238,9 +260,7 @@ public int maxDistance(int[] arr, int m) {
 
 提示
 
-```
-1 <= n <= 2*10^9
-```
+- `1 <= n <= 2*10^9`
 
 #### 题解思路
 
