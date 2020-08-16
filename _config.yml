@@ -46,20 +46,6 @@ markdown: kramdown
 kramdown:
   input: GFM                            # use Github Flavored Markdown !important
 
-math:
-  engine: 'mathjax' # or 'katex'
-  mathjax:
-    enable: true
-    per_page: true
-    src: custom_mathjax_source
-    config:
-      # MathJax config
-  katex:
-    css: custom_css_source
-    js: custom_js_source # not used
-    config:
-      # KaTeX config
-
 
 # Disqus settings
 #disqus_username: _your_disqus_short_name_
