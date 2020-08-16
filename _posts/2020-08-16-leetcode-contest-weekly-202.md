@@ -9,6 +9,8 @@ tags:
     - LeetCode 周赛
     - 复盘
     - 思考随笔
+
+mathjax: true
 ---
 
 > 痛苦的不是失败，而是「我本可以」。
@@ -79,8 +81,8 @@ public boolean threeConsecutiveOdds(int[] arr) {
 
 #### 复杂度分析
 
-- 时间复杂度：`$O(n)$`
-- 空间复杂度：`$O(1)$`
+- 时间复杂度：$O(n)$
+- 空间复杂度：$O(1)$
 
 ## T2. 使数组中所有元素相等的最小操作数
 
@@ -117,7 +119,7 @@ public boolean threeConsecutiveOdds(int[] arr) {
 
 #### 题解思路
 
-- 等差数列，头尾配对操作，最终都变为 `to`
+- 步长为 `2` 的递增等差数列，头尾配对操作，最终都为中位数 `to`
 - 只需求前半段，共 `n / 2` 个元素，的等差数列和
 - 易错点：注意 `n` 的奇偶处理
 
@@ -133,25 +135,49 @@ public int minOperations(int n) {
 
 #### 复杂度分析
 
-- 时间复杂度：`$O(1)$`
-- 空间复杂度：`$O(1)$`
+- 时间复杂度：$O(1)$
+- 空间复杂度：$O(1)$
 
 ## T3. 两球之间的磁力
 
 #### 题目
 
+> 在代号为 C-137 的地球上，Rick 发现如果他将两个球放在他新发明的篮子里，它们之间会形成特殊形式的磁力。Rick 有 `n` 个空的篮子，第 `i` 个篮子的位置在 `position[i]` ，Morty 想把 `m` 个球放到这些篮子里，使得任意两球间 **最小磁力** 最大。
+>
+> 已知两个球如果分别位于 `x` 和 `y`，那么它们之间的磁力为 `|x - y|`。
+>
+> 给你一个整数数组 `position` 和一个整数 `m`，请你返回最大化的最小磁力。
+
 #### 题解思路
+
+- 尽量隔开，要求放完
+- 对结果二分，统计能放下的个数 `cnt`
 
 #### 参考代码
 
 ```java
-
+public int maxDistance(int[] arr, int m) {
+    Arrays.sort(arr);
+    int l = 1, r = arr[arr.length - 1] - arr[0];
+    while (l < r) {
+        int mid = l + (r - l + 1) / 2, cnt = 1;
+        for (int i = 1, last = arr[0]; i < arr.length; i++) {
+            if (arr[i] - last >= mid) {
+                cnt++;
+                last = arr[i];
+            }
+        }
+        if (cnt < m) r = mid - 1;
+        else l = mid;
+    }
+    return l;
+}
 ```
 
 #### 复杂度分析
 
-- 时间复杂度：`$O(n)$`
-- 空间复杂度：`$O(1)$`
+- 时间复杂度：$O(nlog(n))$
+- 空间复杂度：$O(1)$
 
 ## T4. 吃掉 N 个橘子的最少天数
 
