@@ -4,7 +4,7 @@ title:      你以为的差一点，其实差得远
 subtitle:   复盘 LeetCode 第 202 场周赛
 date:       2020-08-16
 author:     lyle
-header-img: "img/in-post/agile-grow/banner.jpeg"
+header-img: "img/in-post/leetcode-contest-weekly-202/banner.jpeg"
 tags:
     - LeetCode 周赛
     - 复盘
