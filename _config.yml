@@ -47,6 +47,13 @@ kramdown:
   input: GFM                            # use Github Flavored Markdown !important
 
 
+# MathJax Support
+mathjax:
+  enable: true
+  per_page: true
+  cdn: //cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML
+# Han Support docs: https://hanzi.pro/
+
 
 # Disqus settings
 #disqus_username: _your_disqus_short_name_
