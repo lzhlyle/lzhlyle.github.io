@@ -83,19 +83,19 @@ featured-condition-size: 0              # A tag will be featured if the size of 
 # Friends
 friends: [
     {
-        title: "liweiwei",
-        href: "https://leetcode-cn.com/u/liweiwei1419/
+       title: "liweiwei",
+       href: "https://leetcode-cn.com/u/liweiwei1419/
     },
     {
-        title: "zerotrac",
-        href: "https://space.bilibili.com/3203291"
+       title: "zerotrac",
+       href: "https://space.bilibili.com/3203291"
     },
     {
-        title: "Hux Blog",
-        href: "http://huangxuan.me"
+       title: "Hux Blog",
+       href: "http://huangxuan.me"
     },
     {
-        title: "Wind Liang",
-        href: "http://leetcode.wang/"
+       title: "Wind Liang",
+       href: "http://leetcode.wang/"
     }
 ]
