@@ -7,6 +7,9 @@ author:     lyle
 header-img: "img/in-post/leetcode-contest-weekly-203/banner.jpg"
 tags:
     - LeetCode 竞赛
+    - 贪心
+    - 动态规划
+    - 前缀和
 ---
 
 本周周赛出的挺好的，每道题都需要在理解的基础上稍微转个弯。无奈 T3，T4 赛中没做出来，一闪而过的思路没有坚持，总想着一步到位：该了您内。
