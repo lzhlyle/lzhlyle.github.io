@@ -7,8 +7,6 @@ author:     lyle
 header-img: "img/in-post/leetcode-contest-weekly-202/banner.jpg"
 tags:
     - LeetCode 竞赛
-    - 复盘
-    - 思考随笔
 ---
 
 > 痛苦的不是失败，而是「我本可以」。
