@@ -7,6 +7,8 @@ author:     lyle
 header-img: "img/in-post/leetcode-contest-weekly-202/banner.jpg"
 tags:
     - LeetCode 竞赛
+    - 二分
+    - 动态规划
 ---
 
 > 痛苦的不是失败，而是「我本可以」。
