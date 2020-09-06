@@ -35,8 +35,6 @@ tags:
 
 <p>在完成所有转换（可能无需转换）后返回最终的字符串。如果有多个解决方案，请返回其中任何一个。可以证明，在给定的约束条件下，答案总是存在的。</p>
 
-<p>&nbsp;</p>
-
 <p><strong>示例 1：</strong></p>
 
 <pre><strong>输入：</strong>s = "?zs"
@@ -61,8 +59,6 @@ tags:
 <pre><strong>输入：</strong>s = "??yw?ipkj?"
 <strong>输出：</strong>"acywaipkja"
 </pre>
-
-<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
@@ -131,8 +127,6 @@ private char get(char nb) {
 	<li>类型 2：三元组 <code>(i, j, k)</code> ，如果 <code>nums2[i]<sup>2</sup>&nbsp;== nums1[j] * nums1[k]</code> 其中 <code>0 &lt;= i &lt; nums2.length</code> 且 <code>0 &lt;= j &lt; k &lt; nums1.length</code></li>
 </ul>
 
-<p>&nbsp;</p>
-
 <p><strong>示例 1：</strong></p>
 
 <pre><strong>输入：</strong>nums1 = [7,4], nums2 = [5,2,8,9]
@@ -163,8 +157,6 @@ private char get(char nb) {
 <strong>输出：</strong>0
 <strong>解释：</strong>不存在符合题目要求的三元组
 </pre>
-
-<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
@@ -259,8 +251,6 @@ private Map<Integer, List<Integer>> getMap(int[] arr) {
 
 <p>请注意，删除一个字符后，删除其他字符的成本不会改变。</p>
 
-<p>&nbsp;</p>
-
 <p><strong>示例 1：</strong></p>
 
 <pre><strong>输入：</strong>s = "abaac", cost = [1,2,3,4,5]
@@ -281,8 +271,6 @@ private Map<Integer, List<Integer>> getMap(int[] arr) {
 <strong>输出：</strong>2
 <strong>解释：</strong>删除第一个和最后一个字母，得到字符串 ("aba") 。
 </pre>
-
-<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
@@ -350,11 +338,9 @@ public int minCost(String s, int[] cost) {
 
 <p>返回可以删除的最大边数，如果 Alice 和 Bob 无法完全遍历图，则返回 -1 。</p>
 
-<p>&nbsp;</p>
-
 <p><strong>示例 1：</strong></p>
 
-<p><strong><img style="height: 191px; width: 179px;" src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/09/06/5510ex1.png" alt=""></strong></p>
+![t4 eg2](/img/in-post/leetcode-contest-weekly-205/t4-eg1.png)
 
 <pre><strong>输入：</strong>n = 4, edges = [[3,1,2],[3,2,3],[1,1,3],[1,2,4],[1,1,2],[2,3,4]]
 <strong>输出：</strong>2
@@ -363,7 +349,7 @@ public int minCost(String s, int[] cost) {
 
 <p><strong>示例 2：</strong></p>
 
-<p><strong><img style="height: 190px; width: 178px;" src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/09/06/5510ex2.png" alt=""></strong></p>
+![t4 eg2](/img/in-post/leetcode-contest-weekly-205/t4-eg2.png)
 
 <pre><strong>输入：</strong>n = 4, edges = [[3,1,2],[3,2,3],[1,1,4],[2,1,4]]
 <strong>输出：</strong>0
@@ -372,13 +358,11 @@ public int minCost(String s, int[] cost) {
 
 <p><strong>示例 3：</strong></p>
 
-<p><strong><img style="height: 190px; width: 178px;" src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/09/06/5510ex3.png" alt=""></strong></p>
+![t4 eg3](/img/in-post/leetcode-contest-weekly-205/t4-eg3.png)
 
 <pre><strong>输入：</strong>n = 4, edges = [[3,2,3],[1,1,2],[2,3,4]]
 <strong>输出：</strong>-1
 <strong>解释：</strong>在当前图中，Alice 无法从其他节点到达节点 4 。类似地，Bob 也不能达到节点 1 。因此，图无法完全遍历。</pre>
-
-<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
