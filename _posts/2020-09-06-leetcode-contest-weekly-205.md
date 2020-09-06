@@ -13,6 +13,8 @@ tags:
     - 贪心
 ---
 
+下了三题，真实水平，每题都被罚时也是醉了。
+
 > 13 分，1000+ 名
 
 ## 题目
@@ -340,7 +342,7 @@ public int minCost(String s, int[] cost) {
 
 <p><strong>示例 1：</strong></p>
 
-![t4 eg2](/img/in-post/leetcode-contest-weekly-205/t4-eg1.png)
+<p><strong><img style="height: 190px; width: 178px;" src="/img/in-post/leetcode-contest-weekly-205/t4-eg1.png" alt=""></strong></p>
 
 <pre><strong>输入：</strong>n = 4, edges = [[3,1,2],[3,2,3],[1,1,3],[1,2,4],[1,1,2],[2,3,4]]
 <strong>输出：</strong>2
@@ -349,7 +351,7 @@ public int minCost(String s, int[] cost) {
 
 <p><strong>示例 2：</strong></p>
 
-![t4 eg2](/img/in-post/leetcode-contest-weekly-205/t4-eg2.png)
+<p><strong><img style="height: 190px; width: 178px;" src="/img/in-post/leetcode-contest-weekly-205/t4-eg2.png" alt=""></strong></p>
 
 <pre><strong>输入：</strong>n = 4, edges = [[3,1,2],[3,2,3],[1,1,4],[2,1,4]]
 <strong>输出：</strong>0
@@ -358,7 +360,7 @@ public int minCost(String s, int[] cost) {
 
 <p><strong>示例 3：</strong></p>
 
-![t4 eg3](/img/in-post/leetcode-contest-weekly-205/t4-eg3.png)
+<p><strong><img style="height: 190px; width: 178px;" src="/img/in-post/leetcode-contest-weekly-205/t4-eg3.png" alt=""></strong></p>
 
 <pre><strong>输入：</strong>n = 4, edges = [[3,2,3],[1,1,2],[2,3,4]]
 <strong>输出：</strong>-1
