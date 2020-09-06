@@ -467,7 +467,7 @@ public int maxNumEdgesToRemove(int n, int[][] edges) {
 
 #### 复杂度分析
 
-- 时间复杂度：`O(n)`
+- 时间复杂度：`O(nlog(n))`
 - 空间复杂度：`O(n)`
 
 ## 赛后复盘
