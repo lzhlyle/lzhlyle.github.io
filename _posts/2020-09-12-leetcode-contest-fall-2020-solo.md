@@ -4,7 +4,7 @@ title:      战队赛求组团呀
 subtitle:   LCCUP 2020 力扣杯 秋季编程大赛 个人赛
 date:       2020-09-12
 author:     lyle
-header-img: "img/in-post/leetcode-contest-fall-2020/banner.jpg"
+header-img: "img/in-post/leetcode-contest-fall-2020-solo/banner.jpg"
 tags:
     - LeetCode 竞赛
     - 二分
