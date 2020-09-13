@@ -294,6 +294,7 @@ public int unhappyFriends(int n, int[][] preferences, int[][] pairs) {
 
 - 连接最近的点，优先级队列解决
 - 最后可能有好几堆各自为战，并查集解决
+- 赛后才知道，这是 [Kruskal 算法](https://zh.wikipedia.org/wiki/%E5%85%8B%E9%B2%81%E6%96%AF%E5%85%8B%E5%B0%94%E6%BC%94%E7%AE%97%E6%B3%95)
 
 #### 参考代码
 
@@ -432,18 +433,44 @@ class UnionFind {
 #### 题解思路
 
 - 据说测试用例不足
-- 学习中...
+- 学习自 [坑神的代码](https://www.bilibili.com/video/BV1cA411J74W?p=4)
+- **「两两交换」的「向后冒泡」**
+- 若某数字后面有大于它的，则不可向后继续冒泡
 
 #### 参考代码
 
 ```java
-// todo
+public boolean isTransformable(String s, String t) {
+    char[] sarr = s.toCharArray();
+    char[] tarr = t.toCharArray();
+    int n = sarr.length;
+
+    Stack<Integer>[] pos = new Stack[10]; // 记录每个数字的位置
+    for (int v = 0; v <= 9; v++)
+        pos[v] = new Stack<>();
+    for (int i = 0; i < n; i++)
+        pos[sarr[i] - '0'].push(i); // 大的在栈顶
+
+    // 从后向前
+    for (int i = n - 1; i >= 0; i--) {
+        int d = tarr[i] - '0';
+        if (pos[d].isEmpty()) return false;
+        
+        // 当前数字 d 之后，不应该有比它大的数
+        // 否则回阻拦「向后冒泡」
+        for (int j = d + 1; j < 10; j++)
+            if (!pos[j].isEmpty() && pos[j].peek() > pos[d].peek())
+                return false;
+        pos[d].pop(); // 出栈
+    }
+    return true;
+}
 ```
 
 #### 复杂度分析
 
-- 时间复杂度：
-- 空间复杂度：
+- 时间复杂度：`O(n)`
+- 空间复杂度：`O(n)`
 
 ## 赛后复盘
 
@@ -451,6 +478,7 @@ class UnionFind {
 - T2 无脑模拟，比赛时总担心有陷阱，题意也是反复读了好几遍。属于模拟的解法，再配合 `Map` 降到 `O(1)` 查找，仅此而已
 - T3 一开始是写错方向了，WA 了一次才知道：两堆点没连在一起。果断转并查集，稳定输出
 - T4 比赛思考应该是逆序对的问题，时间不够了，后续再看题解吧
+    - 思路很巧妙，关键点还是在「两两交换」的「向后冒泡」
 
 总体上自己是满意的，思考的过程还比较清晰，代码输出也更稳定了，不会出现一些低级错误。
 
