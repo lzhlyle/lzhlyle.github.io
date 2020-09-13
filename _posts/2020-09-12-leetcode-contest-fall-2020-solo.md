@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      战队赛求组团呀
-subtitle:   LCCUP 20' 力扣杯 秋季编程大赛
+subtitle:   LCCUP 2020 力扣杯 秋季编程大赛 个人赛
 date:       2020-09-12
 author:     lyle
 header-img: "img/in-post/leetcode-contest-fall-2020/banner.jpg"
@@ -332,7 +332,7 @@ private long dfs(int curr, Map<Integer, Long> map) {
 <p>输入：<code>edges = [[1,2],[2,3],[3,4],[4,1],[2,5],[5,6]], startA = 3, startB = 5</code></p>
 <p>输出：<code>3</code></p>
 <p>解释：<br>
-<img src="/img/in-post/leetcode-contest-fall-2020/t5-eg1.jpg" alt="image.png" height="250px"></p>
+<img src="/img/in-post/leetcode-contest-fall-2020-solo/t5-eg1.jpg" alt="image.png" height="250px"></p>
 <p>第一回合，小力移动至 2 号点，小扣观察到小力的行动后移动至 6 号点；<br>
 第二回合，小力移动至 5 号点，小扣无法移动，留在原地；<br>
 第三回合，小力移动至 6 号点，小力追到小扣。返回 3。</p>
@@ -342,7 +342,7 @@ private long dfs(int curr, Map<Integer, Long> map) {
 <p>输入：<code>edges = [[1,2],[2,3],[3,4],[4,1]], startA = 1, startB = 3</code></p>
 <p>输出：<code>-1</code></p>
 <p>解释：<br>
-<img src="/img/in-post/leetcode-contest-fall-2020/t5-eg2.jpg" alt="image.png" height="250px"></p>
+<img src="/img/in-post/leetcode-contest-fall-2020-solo/t5-eg2.jpg" alt="image.png" height="250px"></p>
 <p>小力如果不动，则小扣也不动；否则小扣移动到小力的对角线位置。这样小力无法追到小扣。</p>
 </blockquote>
 <p><strong>提示：</strong></p>
