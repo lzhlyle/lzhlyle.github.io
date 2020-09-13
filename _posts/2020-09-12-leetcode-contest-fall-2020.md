@@ -302,7 +302,7 @@ private long dfs(int curr, Map<Integer, Long> map) {
         res = Math.min(res, dfs(curr / jump[i], map) + cost[i] + (curr % jump[i]) * inc);
 
         // next ............. x -> bus
-        //  ^----------------------|
+        // ^------------------------|
         res = Math.min(res, dfs((curr / jump[i]) + 1, map) + cost[i] + (jump[i] - (curr % jump[i])) * dec);
     }
     map.put(curr, res);
