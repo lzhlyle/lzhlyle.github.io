@@ -8,7 +8,7 @@ header-img: "img/in-post/klotski-solver/banner.jpg"
 tags:
     - 棋类题解
     - 位运算
-    - 广度优先搜索
+    - 广度优先
 ---
 
 > 譬如朝露，去日苦多。
