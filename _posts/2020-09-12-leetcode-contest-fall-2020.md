@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      战队赛求收留呀
+title:      战队赛求组团呀
 subtitle:   LCCUP 20' 力扣杯 秋季编程大赛
 date:       2020-09-12
 author:     lyle
