@@ -20,6 +20,8 @@ T5 放弃，也不想花时间看了，本文只留下题目。
 
 > 4 分，750+ 名
 
+<p><img src="/img/in-post/leetcode-contest-fall-2020-solo/rank.jpg" alt="image.png" height="0px"></p>
+
 ## 题目
 
 1. [速算机器人](#t1-速算机器人)
