@@ -270,9 +270,10 @@ public int minimumOperations(String leaves) {
 #### 题解思路
 
 - [吃掉 N 个橘子的最少天数](/leetcode-contest-weekly-202/#t4-%E5%90%83%E6%8E%89-n-%E4%B8%AA%E6%A9%98%E5%AD%90%E7%9A%84%E6%9C%80%E5%B0%91%E5%A4%A9%E6%95%B0) 的升级版
-- 往后走几步，可以搭公交
-- 往前走几步，可以搭公交
-- 深度优先
+- 从 `target` 倒着走
+    - 往后走几步，可以搭公交
+    - 往前走几步，可以搭公交
+- 深度优先 + 记忆化
 - 易错点：`map.put(curr, (long) MOD);` 提前放入记忆，避免无限走远
 
 #### 参考代码
@@ -300,7 +301,7 @@ private long dfs(int curr, Map<Integer, Long> map) {
         // next <----- bus <- x
         res = Math.min(res, dfs(curr / jump[i], map) + cost[i] + (curr % jump[i]) * inc);
 
-        // next               x -> bus
+        // next ............. x -> bus
         //  ^----------------------|
         res = Math.min(res, dfs((curr / jump[i]) + 1, map) + cost[i] + (jump[i] - (curr % jump[i])) * dec);
     }
@@ -331,7 +332,7 @@ private long dfs(int curr, Map<Integer, Long> map) {
 <p>输入：<code>edges = [[1,2],[2,3],[3,4],[4,1],[2,5],[5,6]], startA = 3, startB = 5</code></p>
 <p>输出：<code>3</code></p>
 <p>解释：<br>
-<img src="/img/in-post/leetcode-contest-fall-2020/t5-eg1.png" alt="image.png" height="250px"></p>
+<img src="/img/in-post/leetcode-contest-fall-2020/t5-eg1.jpg" alt="image.png" height="250px"></p>
 <p>第一回合，小力移动至 2 号点，小扣观察到小力的行动后移动至 6 号点；<br>
 第二回合，小力移动至 5 号点，小扣无法移动，留在原地；<br>
 第三回合，小力移动至 6 号点，小力追到小扣。返回 3。</p>
@@ -341,7 +342,7 @@ private long dfs(int curr, Map<Integer, Long> map) {
 <p>输入：<code>edges = [[1,2],[2,3],[3,4],[4,1]], startA = 1, startB = 3</code></p>
 <p>输出：<code>-1</code></p>
 <p>解释：<br>
-<img src="/img/in-post/leetcode-contest-fall-2020/t5-eg2.png" alt="image.png" height="250px"></p>
+<img src="/img/in-post/leetcode-contest-fall-2020/t5-eg2.jpg" alt="image.png" height="250px"></p>
 <p>小力如果不动，则小扣也不动；否则小扣移动到小力的对角线位置。这样小力无法追到小扣。</p>
 </blockquote>
 <p><strong>提示：</strong></p>
