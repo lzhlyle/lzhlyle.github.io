@@ -333,7 +333,7 @@ private int dis(int[][] arr, int i, int j) {
 }
 ```
 
-```
+```java
 class UnionFind {
     int count = 0;
     private int[] parent;
