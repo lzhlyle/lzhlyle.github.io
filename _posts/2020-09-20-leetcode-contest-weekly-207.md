@@ -1,10 +1,10 @@
 ---
 layout:     post
-title:      动态规划不可怕，思路不清想到炸。
+title:      动态规划不可怕，思路不清想到炸
 subtitle:   LeetCode 第 207 场周赛
 date:       2020-09-20
 author:     lyle
-header-img: "img/in-post/leetcode-contest-weekly-207/banner.jpeg"
+header-img: "img/in-post/leetcode-contest-weekly-207/banner.jpg"
 tags:
     - LeetCode 竞赛
     - 回溯
@@ -322,7 +322,7 @@ public int maxProductPath(int[][] g) {
 
 <p><strong>示例 1：</strong></p>
 
-<p><img style="height: 243px; width: 322px;" src="/img/in-post/leetcode-contest-weekly-207/t4-eg1.png" alt=""></p>
+<p><img style="height: 243px; width: 322px;" src="/img/in-post/leetcode-contest-weekly-207/t4-eg1.jpg" alt=""></p>
 
 <pre><strong>输入：</strong>cost = [[15, 96], [36, 2]]
 <strong>输出：</strong>17
@@ -334,7 +334,7 @@ public int maxProductPath(int[][] g) {
 
 <p><strong>示例 2：</strong></p>
 
-<p><img style="height: 403px; width: 322px;" src="/img/in-post/leetcode-contest-weekly-207/t4-eg2.png" alt=""></p>
+<p><img style="height: 403px; width: 322px;" src="/img/in-post/leetcode-contest-weekly-207/t4-eg2.jpg" alt=""></p>
 
 <pre><strong>输入：</strong>cost = [[1, 3, 5], [4, 1, 1], [1, 5, 3]]
 <strong>输出：</strong>4
